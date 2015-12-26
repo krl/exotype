@@ -6,7 +6,7 @@ try {
   // are we in node directly?
   var requireNode = require
   var strace = requireNode('stack-trace')
-  var exobundle = requireNode('./node_modules/exoform/src/bundle.js')
+  var exobundle = requireNode('exoform-bundle')
 } catch (e) {}
 
 var debug = false
