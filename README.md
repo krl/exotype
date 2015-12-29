@@ -22,9 +22,9 @@ If you call a method on a Ref object, the ref will lazily load and cache its chi
 ```js
 var exotype = require('exotype')
 
-var Duck = function (age) {
+var Duck = exotype(function (age) {
   this._age = age
-}
+})
 
 Duck.prototype.quack = function (cb) {
   var quacks = []
@@ -34,7 +34,7 @@ Duck.prototype.quack = function (cb) {
   cb(null, quacks.join(', '))
 }
 
-module.exports = exotype(Duck)
+module.exports = Duck
 ```
 
 `example/persist.js`

@@ -1,6 +1,7 @@
 'use strict'
 var exoform = require('exoform')
 var inherits = require('inherits')
+var async = require('async')
 
 try {
   // are we in node directly?
@@ -63,7 +64,7 @@ var codegen = function (marker, code) {
 }
 
 var escapeString = function (string) {
-  return '\.' + string.replace('\'', '\\\'') + '\''
+  return '\'' + string.replace('\'', '\\\'') + '\''
 }
 
 var transform = function (value, selfName, cb) {
@@ -110,12 +111,17 @@ var transform = function (value, selfName, cb) {
         cb(null, '[' + args.join(',') + ']')
       } else {
         var keys = Object.keys(args)
-        var str = '{'
-        for (var i = 0; i < keys.length; i++) {
-          str += escapeString(value) + ':' + args[keys[i]] + ','
-        }
-        if (keys.length) str = str.substr(0, str.length - 1)
-        cb(null, str + '}')
+        async.map(keys, function (key, mcb) {
+          transform(key, selfName, mcb)
+        }, function (err, transformedKeys) {
+          if (err) return cb(err)
+          var str = '{'
+          for (var i = 0; i < keys.length; i++) {
+            str += transformedKeys[i] + ':' + args[keys[i]] + ','
+          }
+          if (keys.length) str = str.substr(0, str.length - 1)
+          cb(null, str + '}')
+        })
       }
     }
     keys.map(function (a) {
@@ -193,7 +199,7 @@ var exotype = function (type) {
       value: { args: args,
                Ref: Ref,
                consModule: consModule,
-               methods: Object.keys(type.prototype),
+               methods: Object.keys(Exo.prototype),
                name: type.name }
     })
   }

@@ -5,6 +5,7 @@ var exoform = require('exoform')
 var Duck = require('./duck.js')
 var RubberDuck = require('./rubber.js')
 var Sorter = require('./sorter.js')
+var Value = require('./value.js')
 
 var persistGetback = function (obj, cb) {
   obj.persist(function (err, res) {
@@ -67,6 +68,18 @@ test('two rounds of persist/restore', function (t) {
         t.end()
       })
     })
+  })
+})
+
+test('complex args', function (t) {
+  var v = new Value({ 'wong': [3, 2, 0],
+                      0: 1,
+                      'he-lo': 9.99,
+                      NaN: undefined })
+
+  persistGetback(v, function (res) {
+    t.deepEqual(v.val, res.val)
+    t.end()
   })
 })
 

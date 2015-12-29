@@ -1,7 +1,7 @@
 var exotype = require('../index.js')
 var a = require('async')
 
-var Duck = function (age, children) {
+var Duck = exotype(function (age, children) {
   this._age = age
   this.children = children || []
   var sum = age
@@ -9,7 +9,7 @@ var Duck = function (age, children) {
     sum += this.children[i].meta.ageSum
   }
   this.meta = { ageSum: sum }
-}
+})
 
 Duck.prototype.age = function (cb) {
   return cb(null, this._age)
@@ -41,4 +41,4 @@ Duck.prototype.quack = function (cb) {
   cb(null, quacks.join(', '))
 }
 
-module.exports = exotype(Duck)
+module.exports = Duck

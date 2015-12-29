@@ -1,8 +1,8 @@
 var exotype = require('../index.js')
 
-var RubberDuck = function (age) {
+var RubberDuck = exotype(function (age) {
   this.meta = { ageSum: age }
-}
+})
 
 RubberDuck.prototype.age = function (cb) {
   cb(null, this.meta.ageSum)
@@ -20,4 +20,4 @@ RubberDuck.prototype.quack = function (cb) {
   cb(null, '*windy squee*')
 }
 
-module.exports = exotype(RubberDuck)
+module.exports = RubberDuck

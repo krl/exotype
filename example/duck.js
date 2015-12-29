@@ -1,8 +1,8 @@
 var exotype = require('../index.js')
 
-var Duck = function (age) {
+var Duck = exotype(function (age) {
   this._age = age
-}
+})
 
 Duck.prototype.quack = function (cb) {
   var quacks = []
@@ -12,4 +12,4 @@ Duck.prototype.quack = function (cb) {
   cb(null, quacks.join(', '))
 }
 
-module.exports = exotype(Duck)
+module.exports = Duck
