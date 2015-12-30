@@ -4,7 +4,7 @@
   "description": "Persistent javascript objects.",
   "main": "index.js",
   "scripts": {
-    "test": "node test/test.js && exoform test/test.js | ipfs cat | node",
+    "test": "node test/test.js && exoform test/test.js | xargs node_modules/.bin/cdump get | node",
     "lint": "standard"
   },
   "pre-commit": [
