@@ -7,7 +7,7 @@ try {
   var requireNode = require
   var strace = requireNode('stack-trace')
   var exobundle = requireNode('exoform-bundle')
-} catch (e) {}
+} catch (e) { throw e }
 
 var debug = false
 
@@ -35,9 +35,7 @@ var wrapMethod = function (name) {
 
 var makeRef = function (hash, methods, meta) {
   for (var i = 0; i < methods.length; i++) {
-    if (methods[i] !== 'reify') {
-      Ref.prototype[methods[i]] = wrapMethod(methods[i])
-    }
+    Ref.prototype[methods[i]] = wrapMethod(methods[i])
   }
   return new Ref(hash, methods, meta)
 }
@@ -203,6 +201,18 @@ var persist = function (cb) {
   }
 }
 
+var getMethods = function (obj) {
+  var keys = Object.keys(obj.prototype)
+  var actual = []
+  for (var i = 0; i < keys.length; i++) {
+    if (keys[i] !== 'reify' &&
+        keys[i] !== 'persist') {
+      actual.push(keys[i])
+    }
+  }
+  return actual
+}
+
 var exotype = function (type) {
   var cons = type.prototype.constructor
 
@@ -226,7 +236,7 @@ var exotype = function (type) {
                Ref: Ref,
                consModule: consModule,
                cons: Exo,
-               methods: Object.keys(Exo.prototype),
+               methods: getMethods(Exo),
                name: type.name }
     })
   }
