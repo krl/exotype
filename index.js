@@ -7,7 +7,7 @@ try {
   var requireNode = require
   var strace = requireNode('stack-trace')
   var exobundle = requireNode('exoform-bundle')
-} catch (e) { throw e }
+} catch (e) { }
 
 var debug = false
 
